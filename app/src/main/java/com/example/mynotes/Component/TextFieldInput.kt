@@ -32,6 +32,7 @@ fun TextInput(
     ){
     val keyboardControlar = LocalSoftwareKeyboardController.current
     TextField(
+        textStyle = androidx.compose.ui.text.TextStyle(color = Color.Black),
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,

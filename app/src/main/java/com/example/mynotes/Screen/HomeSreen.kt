@@ -78,12 +78,16 @@ fun HomeScreenOfApp(
 
 
         }
+        if (notes.isEmpty()) {
+            Text(text = "No Notes Available", modifier = Modifier.padding(16.dp))
+        }
+        else{
         LazyColumn {
             items(notes.size){
-                NotesRow(note = notes[it],removeNote)
+                NotesRow(note = notes[notes.size - 1 - it],removeNote)
             }
         }
-
+}
     }
 }
 //@Composable
