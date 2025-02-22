@@ -4,17 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.Nullable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.mynotes.Component.TextInput
-import com.example.mynotes.Component.loadNotes
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mynotes.Screen.HomeScreenOfApp
-import com.example.mynotes.ViewModel.NotesViewModel
+import com.example.mynotes.ViewModel.NoteViewModel
 import com.example.mynotes.ui.theme.MyNotesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,8 +20,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyNotesTheme {
-
-                    NoteApp()
+                val noteViewModel = viewModel<NoteViewModel>()
+                NoteApp(noteViewModel)
 
             }
         }
@@ -35,8 +30,8 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun NoteApp(notesViewModel: NotesViewModel = NotesViewModel()){
-    var notes = notesViewModel.getNotes()
+fun NoteApp(notesViewModel: NoteViewModel){
+    val notes = notesViewModel.noteList.collectAsState().value
     HomeScreenOfApp(notes =notes ,
         addNode = {notesViewModel.addNote(it)},
         removeNote = {notesViewModel.removeNote(it)})
@@ -47,6 +42,7 @@ fun NoteApp(notesViewModel: NotesViewModel = NotesViewModel()){
 @Composable
 fun GreetingPreview() {
     MyNotesTheme {
-        NoteApp()
+        val noteViewModel = viewModel<NoteViewModel>()
+         NoteApp(noteViewModel)
     }
 }
